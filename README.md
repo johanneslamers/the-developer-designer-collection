@@ -222,9 +222,9 @@ A continuously expanded collection of front-end resources, best practices, deplo
 ## Tools & Services
 
 ### Security
-- **[Mozilla Observatory]** (https://observatory.mozilla.org/) :100:
-- **[Security Headers]** (https://securityheaders.io/)
-- **[SSL Labs]** (https://www.ssllabs.com/ssltest/)
+- **[Mozilla Observatory](https://observatory.mozilla.org/)** :100:
+- **[Security Headers](https://securityheaders.io/)**
+- **[SSL Labs](https://www.ssllabs.com/ssltest/)**
 
 ### Webmasters
 - **[Bing Webmasters](http://www.bing.com/toolbox/webmaster)**
