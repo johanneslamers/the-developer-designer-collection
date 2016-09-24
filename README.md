@@ -1,16 +1,25 @@
 ## The Security Checklist
 
-##### Server Security + Improvements
+##### Server Security
 - [ ] Use HTTPS everywhere.
 - [ ] Patch LOGJAM Vulnerability.
-- [ ] Destroy the session identifier after `logout`.  
-- [ ] Destroy all active sessions on reset password (or offer to).  
-- [ ] Must have the `state` parameter in OAuth2.
-- [ ] No open redirects after successful login or in any other intermediate redirects.
-- [ ] When parsing Signup/Login input, sanitize for javascript://, data://, CRLF characters.
-- [ ] Set secure, httpOnly cookies.
-- [ ] In Mobile `OTP` based mobile verification, do not send the OTP back in the response when `generate OTP` or `Resend OTP`  API is called.
-- [ ] Limit attempts to `Login`, `Verify OTP`, `Resend OTP` and `generate OTP` APIs for a particular user. Have an exponential backoff set or/and something like a captcha based challenge.
-- [ ] Check for randomness of reset password token in the emailed link or SMS.
-- [ ] Set an expiration on the reset password token for a reasonable period.
-- [ ] Expire the reset token after it has been successfully used.
+
+
+
+##### Optimizing SSL on nginx
+- [ ] Patch LOGJAM Vulnerability
+- [ ] HTTP Strict Transport Security header.
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+- [ ] HTTP/2 - This is by far the simplest step. In your site’s nginx configuration file add “http2” to the end of the listen line for the server block.
+
+      listen 443 ssl http2;
+
+
+
+
+
+
+##### Server testing
+- [ ] https://www.ssllabs.com/ssltest/
+- [ ] https://observatory.mozilla.org/
