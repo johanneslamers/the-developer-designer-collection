@@ -3,6 +3,7 @@
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
 A continuously expanded collection of front-end resources, best practices, deployment tips, server configurations, security & resources
+All idea's, feature requests, pull requests, feedback, etc., are welcome. [Create an issue](https://github.com/johanneslamers/Deployment-guide-for-developers/issues).
 
 ## Table of Contents
 * [Quick web development checklist](#quick-web-development-checklist)
@@ -16,8 +17,8 @@ A continuously expanded collection of front-end resources, best practices, deplo
     * [Nginx config](nginx-config)
 * [Resources & Links](resources-links)
 
-
-### Quick web development checklist
+-----
+## Quick web development checklist
 
 #### Fit and finish
 - [ ] **Fix broken links**
@@ -31,7 +32,7 @@ A continuously expanded collection of front-end resources, best practices, deplo
 - [ ] **Duplicated content**
 
 #### Mobile
-- [ ] **Mobile score > 75**
+- [ ] **Mobile score 75+**
 - [ ] **'Viewport' meta tag**
 - [ ] **Correct input types**
 - [ ] **Manual check**
@@ -357,5 +358,5 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 
 ## License
 
-see [the `LICENSE` file](https://github.com/johanneslamers/Deployment-guide-for-developers/blob/master/LICENSE).
 [![CC0](http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/cc-zero.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+see [the `LICENSE` file](https://github.com/johanneslamers/Deployment-guide-for-developers/blob/master/LICENSE).
