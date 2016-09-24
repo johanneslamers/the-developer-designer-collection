@@ -1,9 +1,25 @@
-#  :sparkles: Ultimate developer cheatsheet  :sparkles:
+#  :sparkles: Ultimate developer / designer collection  :sparkles:
 
-This is a collection of best practices, deployment tips, server configurations and security tips for developers & designers before making a website public.
+[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
+
+A continuously expanded collection of front-end resources, best practices, deployment tips, server configurations, security & resources
+
+## Table of Contents
+* [Quick pre launch checklist](#quick-pre-launch-checklist)
+* [HTTP Headers](#http-headers)
+    * [HTTP Security Headers](http-security-headers)
+    * [HTTP Cache Headers](http-cache-headers)
+* [PHP](#php)
+    * [PHP Opcache](php-opcache)
+* [NGINX](#nginx)
+    * [Optimizing SSL on nginx](optimizing-ssl-on-nginx)
+    * [Nginx config](nginx-config)
+* [Resources & Links](resources-links)
 
 
-## The Security Checklist
+### Server testing
+
+### Quick pre launch checklist
 - **Install LetsEncrypt SSL**
 - **Use HTTPS everywhere**
 - **Patch LOGJAM Vulnerability**
@@ -15,9 +31,9 @@ This is a collection of best practices, deployment tips, server configurations a
 
 ## HTTP Headers
 
-### HTTP Security Headers and configurations (Important) :100:
+### :key: HTTP Security Headers
 
-- **Content Security Policy (CSP) header.**
+- **Content Security Policy (CSP) header.** :100:
 
     ````
     Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
@@ -135,7 +151,8 @@ This is a collection of best practices, deployment tips, server configurations a
     ````
 
 
-### Nginx config -  :rocket: Make it FLYYYYYY :rocket:
+### Nginx config -  :rocket: Make it fly :rocket:
+- **Max body size** `client_max_body_size 100M;`
 - **Enable gzip** Add this to your nginx config above the server part:
 
     ````
@@ -149,7 +166,6 @@ This is a collection of best practices, deployment tips, server configurations a
 - **Static file caching**
 
     ````
-
     location ~* (?:^|/)\. {
         deny all;
     }
@@ -203,23 +219,78 @@ This is a collection of best practices, deployment tips, server configurations a
 
 ---
 
-## Resources & Links
+## Tools & Services
 
-### Server testing
-- [SSL Labs] (https://www.ssllabs.com/ssltest/)
-- [Mozilla Observatory] (https://observatory.mozilla.org/) :100:
-- [Security Headers] (https://securityheaders.io/)
+### Security
+- **[Mozilla Observatory]** (https://observatory.mozilla.org/) :100:
+- **[Security Headers]** (https://securityheaders.io/)
+- **[SSL Labs]** (https://www.ssllabs.com/ssltest/)
+
+### Webmasters
+- **[Bing Webmasters](http://www.bing.com/toolbox/webmaster)**
+- **[Google Search Console (GWT)](https://www.google.com/webmasters/)**
+- **[Google Tag Manager](https://www.google.com/analytics/tag-manager/)**
+
+### Analytics
+- **[Ahrefs](https://ahrefs.com/)**
+- **[BuzzSumo](https://app.buzzsumo.com/research/most-shared)**
+- **[Followerwonk](https://moz.com/followerwonk)**
+- **[Google Analytics](https://www.google.com/analytics/)**
+- **[Open Site Explorer](https://moz.com/researchtools/ose/)**
+- **[Piwik](https://piwik.org/)**
+- **[SEMrush](https://www.semrush.com/)**
+- **[SEOstats](https://github.com/eyecatchup/SEOstats)**
+- **[SimilarWeb](https://www.similarweb.com/)**
+- **[Twitter Analytics](https://analytics.twitter.com/)**
+- **[Yahoo Web Analytics](https://web.analytics.yahoo.com)**
+
+### Optimization
+- **[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)**
+- **[Varvy Seo tool](https://varvy.com/)**
+- **[Webpagetest.org](https://www.webpagetest.org/)**
+- **[WooRank](https://www.woorank.com/)**
+
+### Structured Data
+- **[Google+ Snippet Creator](https://developers.google.com/+/web/snippet/)**
+- **[Structured Data Testing Tool](https://developers.google.com/structured-data/testing-tool/)**
+- **[Twitter card validator](https://cards-dev.twitter.com/validator)**
+- **[Facebook Debugger](https://developers.facebook.com/tools/debug)**
+- **[Pinterest](https://developers.pinterest.com/rich_pins/validator/)**
+
+### Keywords
+- **[AdWords Keyword Tool](https://adwords.google.com/KeywordPlanner)**
+- **[Google Trends](https://www.google.com/trends/)**
+- **[Keyword Tool](http://keywordtool.io/)**
+- **[Rankscanner](https://www.rankscanner.com/)**
+
+### Links
+- **[OpenLinkProfiler](http://www.openlinkprofiler.org/)**
+- **[Screaming Frog SEO Spider Tool & Crawler Software](https://www.screamingfrog.co.uk/seo-spider/)**
+- **[Search Engine Spider Simulator](http://tools.seochat.com/tools/search-spider-simulator)**
+
+### Bookmarklets
+- **[OuiSEO](https://github.com/carlsednaoui/seo-bookmarklet)**
+- **[SEO Bookmarklet](https://twkm.ca/projects/seo-bookmarklet)**
+
+### Browser Extensions
+- **[MozBar](https://moz.com/tools/seo-toolbar)**
 
 ### Good reads
-- [Servers for hackers](https://serversforhackers.com/)
+- **[Servers for hackers]**(https://serversforhackers.com/)
 
 ----
 
-## Contributions wanted
-### Feedback
+
+## How to Contribute
+
+Please read [CONTRIBUTING](/CONTRIBUTING.md).
+
+
+## Feedback
 
 All idea's, feature requests, pull requests, feedback, etc., are welcome. [Create an issue](https://github.com/johanneslamers/Deployment-guide-for-developers/issues).
 
 ## License
 
-MIT License: see [the `LICENSE` file](https://github.com/johanneslamers/Deployment-guide-for-developers/blob/master/LICENSE).
+see [the `LICENSE` file](https://github.com/johanneslamers/Deployment-guide-for-developers/blob/master/LICENSE).
+[![CC0](http://mirrors.creativecommons.org/presskit/buttons/88x31/svg/cc-zero.svg)](https://creativecommons.org/publicdomain/zero/1.0/)

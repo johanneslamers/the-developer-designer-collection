@@ -1,3 +1,24 @@
 [submodule "bash-cloud-backup"]
 	path = bash-cloud-backup
 	url = https://github.com/pontikis/bash-cloud-backup
+[submodule "webapp-checklist"]
+	path = webapp-checklist
+	url = https://github.com/dhilipsiva/webapp-checklist
+[submodule "search-engine-optimization"]
+	path = search-engine-optimization
+	url = https://github.com/marcobiedermann/search-engine-optimization
+[submodule "awesome-stock-resources"]
+	path = awesome-stock-resources
+	url = https://github.com/neutraltone/awesome-stock-resources
+[submodule "nginx-conf"]
+	path = nginx-conf
+	url = https://github.com/lebinh/nginx-conf
+[submodule "awesome"]
+	path = awesome
+	url = https://github.com/sindresorhus/awesome
+[submodule "head"]
+	path = head
+	url = https://github.com/joshbuchea/HEAD
+[submodule "frontend-stuff"]
+	path = frontend-stuff
+	url = https://github.com/moklick/frontend-stuff
