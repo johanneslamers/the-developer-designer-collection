@@ -17,7 +17,6 @@ This is a collection of best practices, deployment tips, server management and s
 
     ````
     Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
-
     ````
 
     **Examples**
@@ -46,14 +45,12 @@ This is a collection of best practices, deployment tips, server management and s
 
     ````
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-
     ````
 - **X-Content-Type-Options header.** This tells not to load scripts and stylesheets unless the server indicates the correct MIME type
 - **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 
     ````
     X-XSS-Protection: 1; mode=block
-
     ````
 
 
@@ -80,7 +77,6 @@ This is a collection of best practices, deployment tips, server management and s
 
     ````
     Expires: Sun, 03 May 2015 23:02:37 GMT
-
     ````
 
     To avoid breaking the specification, avoid setting the date value to more than a year.
@@ -89,20 +85,18 @@ This is a collection of best practices, deployment tips, server management and s
 
 
 ### PHP Opcache
-**First find total amount of PHP files for 'opcache.max_accelerated_files'**
+- **First find total amount of PHP files for 'opcache.max_accelerated_files'**
 
     ````
     $ find project/ -iname *.php|wc -l
-
     ````
-**Change OpCache configuration**
+- **Change OpCache configuration**
 
     ````
     opcache.memory_consumption=128
     opcache.max_accelerated_files=10000
     opcache.max_wasted_percentage=10
     opcache.validate_timestamps=0
-
     ````
 
 
@@ -116,14 +110,12 @@ This is a collection of best practices, deployment tips, server management and s
 
     ````
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"
-
     ````
 - **Connection Credentials Caching**
 
     ````
     ssl_session_cache shared:SSL:20m;
     ssl_session_timeout 180m;
-
     ````
     > This will create a cache shared between all worker processes. The cache size is specified in bytes (in this example: 20 MB). According to the Nginx documentation can 1MB store about 4000 sessions, so for this example, we can store about 80000 sessions, and we will store them for 180 minutes. If you expect more traffic, increase the cache size accordingly.
 
@@ -139,7 +131,6 @@ This is a collection of best practices, deployment tips, server management and s
 
     ````
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-
     ````
 - **Optimizing the cipher suites**
 
@@ -149,14 +140,12 @@ This is a collection of best practices, deployment tips, server management and s
 
     ````
     ssl_prefer_server_ciphers on;
-
     ````
 
     Next we have to provide the actual list of ciphers:
 
     ````
     ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
-
     ````
 
     All of these suites use forward secrecy, and the fast cipher AES is the preferred one. You’ll lose support for all versions of Internet Explorer on Windows XP. Who cares?
@@ -173,7 +162,6 @@ This is a collection of best practices, deployment tips, server management and s
     gzip_buffers 16 8k;
     gzip_http_version 1.1;
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
     ````
 - **Static file caching**
 
@@ -213,14 +201,10 @@ This is a collection of best practices, deployment tips, server management and s
     location ~ /\.ht {
         deny all;
     }
-
     ````
 
 
 
-
-
-----
 
 ### Server testing
 - [SSL Labs] (https://www.ssllabs.com/ssltest/)
@@ -230,7 +214,7 @@ This is a collection of best practices, deployment tips, server management and s
 ### Good reads
 - [Servers for hackers](https://serversforhackers.com/)
 
-
+----
 
 ## Contributions wanted
 ### Feedback
