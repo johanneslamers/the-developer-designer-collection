@@ -81,6 +81,20 @@
     | 6             | `no-transform`. Does not convert the entity-body.    |
 
 
+- [ ] **Pragma**
+
+    The old “pragma” header accomplishes many things most of them characterised by newer implementations. We are however most concerned with the `pragma: no-cache` directive which is interpreted by newer implementations as `cache-control: no-cache`. You don’t need to be concerned about this directive because it’s a request header which will be ignored by KeyCDN’s edge servers. It is however important to be aware of the directive for the overall understanding. Going forward, there won’t be new HTTP directives defined for pragma.
+
+- [ ] **Expires**
+
+    A couple of years back, this was the main way of specifying when assets expires. Expires is simply a basic date-time stamp. It’s fairly useful for old user agents which still roam unchartered territories. It is however important to note that cache-control headers, max-age and s-maxage still take precedence on most modern systems. It’s however good practice to set matching values here for the sake of compatibility. It’s also important to ensure you format the date properly or it might be considered as expired.
+
+    ````
+        Expires: Sun, 03 May 2015 23:02:37 GMT
+    ````
+
+    To avoid breaking the specification, avoid setting the date value to more than a year.
+
 ----
 
 ### PHP Opcache
