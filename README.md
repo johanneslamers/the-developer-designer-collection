@@ -4,37 +4,40 @@
 
 ## :sparkles: The Security Checklist :sparkles:
 
-### Server Security
+### Security
 - [ ] **Use HTTPS everywhere.**
 - [ ] **Patch LOGJAM Vulnerability.**
+- [ ] **[Set HTTP Security Headers](HTTP Security Headers)
 
 
 #### HTTP Security Headers
+
 - [ ] **Content Security Policy (CSP) header.**
 
     ```Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;``` :sparkles:
 
-    **Examples**
+    *Examples*
 
     > Disable unsafe inline/eval, only allow loading of resources (images, fonts, scripts, etc.) over https (recommended)
 
-    ```Content-Security-Policy: default-src https:```
+    > ```Content-Security-Policy: default-src https:```
 
     > Disable the use of unsafe inline/eval, allow everything else
 
-    ```Content-Security-Policy: *```
+    > ```Content-Security-Policy: *```
 
     > Disable unsafe inline/eval, only load resources from same origin, except also allow images on imgur
 
-    ```Content-Security-Policy: default-src 'self'; img-src 'self' https://i.imgur.com```
+    > ```Content-Security-Policy: default-src 'self'; img-src 'self' https://i.imgur.com```
 
     > Disable unsafe inline/eval, only load resources from same origin, fonts from google, images from same origin and imgur
 
-    ```Content-Security-Policy: default-src 'self'; font-src 'https://fonts.googleapis.com'; img-src 'self' https://i.imgur.com```
+    > ```Content-Security-Policy: default-src 'self'; font-src 'https://fonts.googleapis.com'; img-src 'self' https://i.imgur.com```
 
     > Pre-existing site uses too much inline code to fix, but wants to ensure resources are loaded only over https
 
-    ```Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'```
+    > ```Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'```
+
 
 - [ ] **HTTP Strict Transport Security (HSTS) header**
 
@@ -83,7 +86,7 @@
 - [ ] Patch LOGJAM Vulnerability
 - [ ] HTTP Strict Transport Security header.
 
-    ```add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"```{nginx}
+    ```add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"```
 
 - [ ] HTTP/2 - In your site’s nginx configuration file add ```listen 443 ssl http2;``` to the end of the listen line for the server block
 
