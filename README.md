@@ -12,54 +12,51 @@ This is a collection of best practices, deployment tips, server management and s
 
 -------------
 
-### HTTP Security Headers ###
+    #### HTTP Security Headers ###
 
-- [ ] **X-Frame-Options header.**
+    - [ ] **X-Frame-Options header.** This is an HTTP header that allows sites control over how your site may be framed within an iframe.
+    - [ ] **Content Security Policy (CSP) header.** :100:
 
-    This is an HTTP header that allows sites control over how your site may be framed within an iframe.
-- [ ] **Content Security Policy (CSP) header.** :100:
+        ````
+        Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
 
-    ````
-    Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
+        ````
 
-    ````
+        **Examples**
 
-    **Examples**
+        > Disable unsafe inline/eval, only allow loading of resources (images, fonts, scripts, etc.) over https (recommended)
 
-    > Disable unsafe inline/eval, only allow loading of resources (images, fonts, scripts, etc.) over https (recommended)
+        > ```Content-Security-Policy: default-src https:```
 
-    > ```Content-Security-Policy: default-src https:```
+        > Disable the use of unsafe inline/eval, allow everything else
 
-    > Disable the use of unsafe inline/eval, allow everything else
+        > ```Content-Security-Policy: *```
 
-    > ```Content-Security-Policy: *```
+        > Disable unsafe inline/eval, only load resources from same origin, except also allow images on imgur
 
-    > Disable unsafe inline/eval, only load resources from same origin, except also allow images on imgur
+        > ```Content-Security-Policy: default-src 'self'; img-src 'self' https://i.imgur.com```
 
-    > ```Content-Security-Policy: default-src 'self'; img-src 'self' https://i.imgur.com```
+        > Disable unsafe inline/eval, only load resources from same origin, fonts from google, images from same origin and imgur
 
-    > Disable unsafe inline/eval, only load resources from same origin, fonts from google, images from same origin and imgur
+        > ```Content-Security-Policy: default-src 'self'; font-src 'https://fonts.googleapis.com'; img-src 'self' https://i.imgur.com```
 
-    > ```Content-Security-Policy: default-src 'self'; font-src 'https://fonts.googleapis.com'; img-src 'self' https://i.imgur.com```
+        > Pre-existing site uses too much inline code to fix, but wants to ensure resources are loaded only over https
 
-    > Pre-existing site uses too much inline code to fix, but wants to ensure resources are loaded only over https
+        > ```Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'```
 
-    > ```Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'```
+    - [ ] **HTTP Strict Transport Security (HSTS) header**
 
+        ````
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-- [ ] **HTTP Strict Transport Security (HSTS) header**
+        ````
+    - [ ] **X-Content-Type-Options header.** This tells not to load scripts and stylesheets unless the server indicates the correct MIME type
+    - [ ] **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 
-    ````
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        ````
+        X-XSS-Protection: 1; mode=block
 
-    ````
-- [ ] **X-Content-Type-Options header.** This tells not to load scripts and stylesheets unless the server indicates the correct MIME type
-- [ ] **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
-
-    ````
-    X-XSS-Protection: 1; mode=block
-
-    ````
+        ````
 
 
 ----
