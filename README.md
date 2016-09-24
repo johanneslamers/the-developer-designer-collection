@@ -2,18 +2,18 @@
 
 This is a collection of best practices, deployment tips, server management and security tips for developers & designers
 
+
+
 ## The Security Checklist
+- **Install LetsEncrypt SSL**
+- **Use HTTPS everywhere**
+- **Patch LOGJAM Vulnerability**
+- **Set HTTP Security Headers**
 
-### Security
-- [ ] **Install LetsEncrypt SSL**
-- [ ] **Use HTTPS everywhere**
-- [ ] **Patch LOGJAM Vulnerability**
-- [ ] **Set HTTP Security Headers**
+### HTTP Security Headers
 
-#### HTTP Security Headers
-
-- [ ] **X-Frame-Options header.** This is an HTTP header that allows sites control over how your site may be framed within an iframe.
-- [ ] **Content Security Policy (CSP) header.** :100:
+- **X-Frame-Options header.** This is an HTTP header that allows sites control over how your site may be framed within an iframe.
+- **Content Security Policy (CSP) header.** :100:
 
     ````
     Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
@@ -42,14 +42,14 @@ This is a collection of best practices, deployment tips, server management and s
 
     > ```Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'```
 
-- [ ] **HTTP Strict Transport Security (HSTS) header**
+- **HTTP Strict Transport Security (HSTS) header**
 
     ````
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
     ````
-- [ ] **X-Content-Type-Options header.** This tells not to load scripts and stylesheets unless the server indicates the correct MIME type
-- [ ] **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
+- **X-Content-Type-Options header.** This tells not to load scripts and stylesheets unless the server indicates the correct MIME type
+- **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 
     ````
     X-XSS-Protection: 1; mode=block
@@ -58,7 +58,7 @@ This is a collection of best practices, deployment tips, server management and s
 
 
 ### HTTP Cache Headers
-- [ ] **Cache-Control**
+- **Cache-Control**
 
     The Cache-Control general-header field is used to specify directives that MUST be obeyed by all the caching system. The syntax is as follows:
     An HTTP client or server can use the Cache-control general header to specify parameters for the cache or to request certain kinds of documents from the cache. The caching directives are specified in a comma-separated list. For example: ``Cache-control: no-cache``. The following table lists the important cache request directives that can be used by the client in its HTTP request:
@@ -71,10 +71,10 @@ This is a collection of best practices, deployment tips, server management and s
     | 4             | `max-stale` = seconds. Indicates that the client is willing to accept a response that has exceeded its expiration time. If seconds are given, it must not be expired by more than that time.     |
     | 5             | `min-fresh` = seconds. Indicates that the client is willing to accept a response whose freshness lifetime is not less than its current age plus the specified time in seconds.     |
     | 6             | `no-transform`. Does not convert the entity-body.    |
-- [ ] **Pragma**
+- **Pragma**
 
     The old “pragma” header accomplishes many things most of them characterised by newer implementations. We are however most concerned with the `pragma: no-cache` directive which is interpreted by newer implementations as `cache-control: no-cache`. You don’t need to be concerned about this directive because it’s a request header which will be ignored by KeyCDN’s edge servers. It is however important to be aware of the directive for the overall understanding. Going forward, there won’t be new HTTP directives defined for pragma.
-- [ ] **Expires**
+- **Expires**
 
     A couple of years back, this was the main way of specifying when assets expires. Expires is simply a basic date-time stamp. It’s fairly useful for old user agents which still roam unchartered territories. It is however important to note that cache-control headers, max-age and s-maxage still take precedence on most modern systems. It’s however good practice to set matching values here for the sake of compatibility. It’s also important to ensure you format the date properly or it might be considered as expired.
 
