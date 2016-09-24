@@ -5,7 +5,7 @@
 A continuously expanded collection of front-end resources, best practices, deployment tips, server configurations, security & resources
 
 ## Table of Contents
-* [Quick pre launch checklist](#quick-pre-launch-checklist)
+* [Quick web development checklist](#quick-web-development-checklist)
 * [HTTP Headers](#http-headers)
     * [HTTP Security Headers](http-security-headers)
     * [HTTP Cache Headers](http-cache-headers)
@@ -17,14 +17,72 @@ A continuously expanded collection of front-end resources, best practices, deplo
 * [Resources & Links](resources-links)
 
 
-### Server testing
+### Quick web development checklist
 
-### Quick pre launch checklist
-- **Install LetsEncrypt SSL**
-- **Use HTTPS everywhere**
-- **Patch LOGJAM Vulnerability**
-- **Set HTTP Security Headers**
-- **Set up monitoring for your systems, and log stuff (use New Relic or something like that).**
+#### Fit and finish
+- [ ] **Fix broken links**
+- [ ] **Spell check**
+- [ ] **Cross browser testing**
+- [ ] **HTML5 compatibility**
+- [ ] **Custom 404 pages**
+- [ ] **Generate Favicon**
+- [ ] **Forms tested**
+- [ ] **Friendly URL's**
+- [ ] **Duplicated content**
+
+#### Mobile
+- [ ] **Mobile score > 75**
+- [ ] **'Viewport' meta tag**
+- [ ] **Correct input types**
+- [ ] **Manual check**
+- [ ] **Check using emulators**
+
+#### Analytics
+- [ ] **Uptime monitoring**
+- [ ] **Traffic Analytics**
+- [ ] **Block your IP on Analytics**
+- [ ] **Google webmaster tools**
+
+#### Accessibility
+- [ ] **Accessibility validation**
+- [ ] **Color contrast**
+- [ ] **WAI-ARIA**
+
+#### Code quality
+- [ ] **HTML Validation**
+- [ ] **CSS Validation**
+- [ ] **CSS Lint**
+- [ ] **JS Lint**
+
+#### Performance
+- [ ] **Page speed score 85+**
+- [ ] **Yahoo YSlow score 85+**
+- [ ] **Web page test score 90+**
+- [ ] **Optimize HTTP Headers**
+- [ ] **Optimize static file cache**
+- [ ] **Optimize images**
+- [ ] **HTTP2**
+
+#### Semantics
+- [ ] **Add meaning with Microdata - JSON-LD**
+- [ ] **Validate semantics**
+
+#### SEO
+- [ ] **SenSEO score 85+**
+- [ ] **robots.txt**
+- [ ] **XML Sitemap**
+
+### Server & Security
+- [ ] **Install LetsEncrypt SSL**
+- [ ] **Use HTTPS everywhere**
+- [ ] **Patch LOGJAM Vulnerability**
+- [ ] **Set HTTP Security Headers**
+- [ ] **Set up monitoring for your systems, and log stuff (use New Relic or something like that)**
+- [ ] **SSL Labs server test score "A"**
+- [ ] **Enforce or remove WWW**
+- [ ] **Backups**
+- [ ] **Maintenance plan**
+
 
 
 ----
@@ -39,7 +97,7 @@ A continuously expanded collection of front-end resources, best practices, deplo
     Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
     ````
 
-- **HTTP Strict Transport Security (HSTS) header**
+- **HTTP Strict Transport Security (HSTS) header** :100:
 
     ````
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
@@ -151,7 +209,7 @@ A continuously expanded collection of front-end resources, best practices, deplo
     ````
 
 
-### Nginx config -  :rocket: Make it fly :rocket:
+### Nginx config - Make it fly :rocket:
 - **Max body size** `client_max_body_size 100M;`
 - **Enable gzip** Add this to your nginx config above the server part:
 
@@ -244,6 +302,9 @@ A continuously expanded collection of front-end resources, best practices, deplo
 - **[Twitter Analytics](https://analytics.twitter.com/)**
 - **[Yahoo Web Analytics](https://web.analytics.yahoo.com)**
 
+### Browser Testing
+- **[Browserling](https://www.browserling.com/)**
+
 ### Optimization
 - **[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)**
 - **[Varvy Seo tool](https://varvy.com/)**
@@ -252,7 +313,7 @@ A continuously expanded collection of front-end resources, best practices, deplo
 
 ### Structured Data
 - **[Google+ Snippet Creator](https://developers.google.com/+/web/snippet/)**
-- **[Structured Data Testing Tool](https://developers.google.com/structured-data/testing-tool/)**
+- **[Structured Data Testing Tool](https://developers.google.com/structured-data/testing-tool/)** :100:
 - **[Twitter card validator](https://cards-dev.twitter.com/validator)**
 - **[Facebook Debugger](https://developers.facebook.com/tools/debug)**
 - **[Pinterest](https://developers.pinterest.com/rich_pins/validator/)**
@@ -273,10 +334,14 @@ A continuously expanded collection of front-end resources, best practices, deplo
 - **[SEO Bookmarklet](https://twkm.ca/projects/seo-bookmarklet)**
 
 ### Browser Extensions
+- **[BuiltWith Technology Profiler](https://chrome.google.com/webstore/detail/builtwith-technology-prof/dapjbgnjinbpoindlpdmhochffioedbn?hl=en)**
+- **[Dimensions - a tool to measure screen dimensions](https://chrome.google.com/webstore/detail/dimensions/baocaagndhipibgklemoalmkljaimfdj?hl=en)**
 - **[MozBar](https://moz.com/tools/seo-toolbar)**
+- **[SenSEO for firefox](https://addons.mozilla.org/en-US/firefox/addon/senseo/)**
 
 ### Good reads
-- **[Servers for hackers]**(https://serversforhackers.com/)
+- **[Servers for hackers](https://serversforhackers.com/)** :100:
+- **[Scott Helme](https://scotthelme.co.uk/)** :100:
 
 ----
 
