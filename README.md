@@ -1,7 +1,6 @@
 #  :sparkles: Ultimate developer cheatsheet  :sparkles:
 
-This is a collection of best practices, deployment tips, server management and security tips for developers & designers
-
+This is a collection of best practices, deployment tips, server configurations and security tips for developers & designers before making a website public.
 
 
 ## The Security Checklist
@@ -9,49 +8,34 @@ This is a collection of best practices, deployment tips, server management and s
 - **Use HTTPS everywhere**
 - **Patch LOGJAM Vulnerability**
 - **Set HTTP Security Headers**
+- **Set up monitoring for your systems, and log stuff (use New Relic or something like that).**
 
-### HTTP Security Headers
 
-- **X-Frame-Options header.** This is an HTTP header that allows sites control over how your site may be framed within an iframe.
-- **Content Security Policy (CSP) header.** :100:
+----
+
+## HTTP Headers
+
+### HTTP Security Headers and configurations (Important) :100:
+
+- **Content Security Policy (CSP) header.**
 
     ````
     Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'" always;
     ````
-
-    **Examples**
-
-    > Disable unsafe inline/eval, only allow loading of resources (images, fonts, scripts, etc.) over https (recommended)
-
-    > ```Content-Security-Policy: default-src https:```
-
-    > Disable the use of unsafe inline/eval, allow everything else
-
-    > ```Content-Security-Policy: *```
-
-    > Disable unsafe inline/eval, only load resources from same origin, except also allow images on imgur
-
-    > ```Content-Security-Policy: default-src 'self'; img-src 'self' https://i.imgur.com```
-
-    > Disable unsafe inline/eval, only load resources from same origin, fonts from google, images from same origin and imgur
-
-    > ```Content-Security-Policy: default-src 'self'; font-src 'https://fonts.googleapis.com'; img-src 'self' https://i.imgur.com```
-
-    > Pre-existing site uses too much inline code to fix, but wants to ensure resources are loaded only over https
-
-    > ```Content-Security-Policy: default-src https: 'unsafe-eval' 'unsafe-inline'```
 
 - **HTTP Strict Transport Security (HSTS) header**
 
     ````
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
     ````
+- **X-Frame-Options header.** This is an HTTP header that allows sites control over how your site may be framed within an iframe
 - **X-Content-Type-Options header.** This tells not to load scripts and stylesheets unless the server indicates the correct MIME type
-- **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
+- **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks
 
     ````
     X-XSS-Protection: 1; mode=block
     ````
+
 
 
 ### HTTP Cache Headers
@@ -82,7 +66,9 @@ This is a collection of best practices, deployment tips, server management and s
     To avoid breaking the specification, avoid setting the date value to more than a year.
 
 
+---
 
+## PHP
 
 ### PHP Opcache
 - **First find total amount of PHP files for 'opcache.max_accelerated_files'**
@@ -99,7 +85,7 @@ This is a collection of best practices, deployment tips, server management and s
     opcache.validate_timestamps=0
     ````
 
-
+---
 
 ## Nginx
 
@@ -148,11 +134,8 @@ This is a collection of best practices, deployment tips, server management and s
     ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
     ````
 
-    All of these suites use forward secrecy, and the fast cipher AES is the preferred one. You’ll lose support for all versions of Internet Explorer on Windows XP. Who cares?
 
-
-
-### Nginx config
+### Nginx config (Make it FAAAAAAST)
 - **Enable gzip** Add this to your nginx config above the server part:
 
     ````
@@ -166,6 +149,20 @@ This is a collection of best practices, deployment tips, server management and s
 - **Static file caching**
 
     ````
+
+    location ~* (?:^|/)\. {
+        deny all;
+    }
+
+    location ~* (?:\.(?:bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)|~)$ {
+        deny all;
+    }
+
+    location ~* \.(?:manifest|appcache|html?|xml|json)$ {
+        try_files $uri /index.php?$query_string;
+        expires -1;
+    }
+
     location ~* \.(?:rss|atom)$ {
         expires 1h;
         add_header Cache-Control "public";
@@ -204,7 +201,9 @@ This is a collection of best practices, deployment tips, server management and s
     ````
 
 
+---
 
+## Resources & Links
 
 ### Server testing
 - [SSL Labs] (https://www.ssllabs.com/ssltest/)
