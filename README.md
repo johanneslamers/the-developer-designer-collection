@@ -1,16 +1,17 @@
 # Ultimate developer cheatsheet
 
-----
 
 ## :sparkles: The Security Checklist :sparkles:
 
 ### Security
-- [ ] **Use HTTPS everywhere.**
-- [ ] **Patch LOGJAM Vulnerability.**
-- [ ] **[Set HTTP Security Headers](HTTP Security Headers)
+- [ ] **Install LetsEncrypt SSL**
+- [ ] **Use HTTPS everywhere**
+- [ ] **Patch LOGJAM Vulnerability**
+- [ ] **Set HTTP Security Headers**
 
+----
 
-#### HTTP Security Headers
+### HTTP Security Headers
 
 - [ ] **Content Security Policy (CSP) header.**
 
@@ -47,7 +48,7 @@
 - [ ] **X-Frame-Options header.** This is an HTTP header that allows sites control over how your site may be framed within an iframe.
 - [ ] **X-XSS-Protection header.** Stops pages from loading when they detect reflected cross-site scripting (XSS) attacks.
 
-    ``` # Block pages from loading when they detect reflected XSS attacks: X-XSS-Protection: 1; mode=block ```
+    ``` X-XSS-Protection: 1; mode=block ```
 
 
 
@@ -55,10 +56,11 @@
 ----
 ### HTTP Cache Headers
 - [ ] **Cache-Control**
+
     The Cache-Control general-header field is used to specify directives that MUST be obeyed by all the caching system. The syntax is as follows:
     An HTTP client or server can use the Cache-control general header to specify parameters for the cache or to request certain kinds of documents from the cache. The caching directives are specified in a comma-separated list. For example: ``Cache-control: no-cache``. The following table lists the important cache request directives that can be used by the client in its HTTP request:
 
-    | S.N.          | Cache Request Directive and Description    |
+    | #             | Cache Request Directive and Description    |
     | ------------- |-------------|
     | 1             | `no-cache`. A cache must not use the response to satisfy a subsequent request without successful revalidation with the origin server. |
     | 2             | `no-store`. The cache should not store anything about the client request or server response.      |
@@ -71,26 +73,119 @@
 ----
 ### Opcache configuration
 
-- [ ] **First find total amount of PHP files.** ``` $ find project/ -iname *.php|wc -l ```
-- [ ] **Put all together**
+- [ ] **First find total amount of PHP files for `max_accelerated_files`.** ` $ find project/ -iname *.php|wc -l `
+- [ ] **Change OpCache configuration**
 
-    ```opcache.memory_consumption=128 [comment]: <> (# MB, adjust to your needs)
+    ```opcache.memory_consumption=128
     opcache.max_accelerated_files=10000
     opcache.max_wasted_percentage=10
     opcache.validate_timestamps=0 ```
 
 
+
+
+## NginX
+
 ----
 
 ### Optimizing SSL on nginx
-- [ ] Patch LOGJAM Vulnerability
-- [ ] HTTP Strict Transport Security header.
+- [ ] **Patch LOGJAM Vulnerability**
+- [ ] **HTTP/2** - In your site’s nginx configuration file add `listen 443 ssl http2;` to the end of the listen line for the server block
+- [ ] **HTTP Strict Transport Security header**
 
-    ```add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"```
+    ```
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    ```
 
-- [ ] HTTP/2 - In your site’s nginx configuration file add ```listen 443 ssl http2;``` to the end of the listen line for the server block
+- [ ] **Connection Credentials Caching**
+
+    ```
+ssl_session_cache shared:SSL:20m;
+ssl_session_timeout 180m;
+    ```
+    > This will create a cache shared between all worker processes. The cache size is specified in bytes (in this example: 20 MB). According to the Nginx documentation can 1MB store about 4000 sessions, so for this example, we can store about 80000 sessions, and we will store them for 180 minutes. If you expect more traffic, increase the cache size accordingly.
+
+- [ ] **Disable SSL** (What? Yes!)
+
+    Techically SSL (Secure Sockets Layer) is actually superseded by TLS (Transport Layer Security). I guess it is just out of old habit and convention we still talk about SSL. SSL contains several weaknesses, there have been various attacks on implementations and it is vulnerable to certain protocol downgrade attacks.
+
+    The only browser or library still known to mankind that doesn’t support TLS is of course IE 6. Since that browser is dead (should be, there is not one single excuse in the world), we can safely disable SSL.
+
+    The most recent version of TLS is 1.2, but there are still modern browsers and libraries that use TLS 1.0.
+
+    So, we’ll add this line to our config then:
+
+    ``` ssl_protocols TLSv1 TLSv1.1 TLSv1.2; ```
+
+- [ ] **Optimizing the cipher suites**
+
+    The cipher suites are the hard core of SSL/TLS. This is where the encryption happens, and I will really not go into any of that here. All you need to know is that there are very secure suits, there are unsafe suites and if you thought browser compatibility issues were big on the front-end, this is a whole new ballgame. Researching what cipher suites to use, what not to use and in what order takes a huge amount of time to research. Luckily for you, I’ve done it.
+
+    First you need to configure Nginx to tell the client that we have a preferred order of available cipher suites:
+
+    ```ssl_prefer_server_ciphers on;```
+
+    Next we have to provide the actual list of ciphers:
+
+    ```    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA'; ```
+
+    All of these suites use forward secrecy, and the fast cipher AES is the preferred one. You’ll lose support for all versions of Internet Explorer on Windows XP. Who cares?
 
 
+
+### Nginx config
+
+- [ ] **Enable gzip** Add this to your nginx config above the server part:
+
+    ```
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_buffers 16 8k;
+    gzip_http_version 1.1;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    ```
+
+- [ ] **Static file caching**
+
+    ```
+
+    location ~* \.(?:rss|atom)$ {
+        expires 1h;
+        add_header Cache-Control "public";
+    }
+
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+        try_files $uri /index.php?$query_string;
+        expires 1M;
+        add_header Cache-Control "public";
+        etag off;
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~* \.(?:css|js)$ {
+        try_files $uri /index.php?$query_string;
+        expires 1y;
+        add_header Cache-Control "public";
+        etag off;
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~* \.(?:ttf|ttc|otf|eot|woff)$ {
+        try_files $uri /index.php?$query_string;
+        expires 1y;
+        add_header Cache-Control "public";
+        etag off;
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+    ```
 
 
 
@@ -103,7 +198,8 @@
 - [ ] [Mozilla Observatory] (https://observatory.mozilla.org/) :100:
 - [ ] [Security Headers] (https://securityheaders.io/)
 
-
+### Good reads
+- [ ] [Servers for hackers](https://serversforhackers.com/)
 
 
 
