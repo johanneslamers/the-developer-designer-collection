@@ -135,7 +135,7 @@ This is a collection of best practices, deployment tips, server configurations a
     ````
 
 
-### Nginx config (Make it FAAAAAAST)
+### Nginx config -  :rocket: Make it FLYYYYYY :rocket:
 - **Enable gzip** Add this to your nginx config above the server part:
 
     ````
