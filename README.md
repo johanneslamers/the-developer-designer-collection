@@ -1,4 +1,4 @@
-#  :sparkles: Ultimate developer / designer collection  :sparkles:
+# :sparkles: Ultimate developer / designer collection :sparkles:
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
@@ -9,7 +9,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [:sparkles: Ultimate developer / designer collection  :sparkles:](#sparkles-ultimate-developer-designer-collection-sparkles)
+- [:sparkles: Ultimate developer / designer collection :sparkles:](#sparkles-ultimate-developer-designer-collection-sparkles)
 	- [Table of Contents](#table-of-contents)
 	- [Quick web development checklist](#quick-web-development-checklist)
 		- [Fit and finish](#fit-and-finish)
@@ -27,28 +27,16 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 	- [Nginx](#nginx)
 		- [Nginx tuning - making your servers fly :rocket:](#nginx-tuning-making-your-servers-fly-rocket)
 			- [Worker Processes and Worker Connections](#worker-processes-and-worker-connections)
-- [One worker per CPU-core.](#one-worker-per-cpu-core)
 			- [HTTP and TCP Optimizations](#http-and-tcp-optimizations)
 			- [Buffer size](#buffer-size)
 			- [Timeouts](#timeouts)
 			- [Gzip compression](#gzip-compression)
 			- [PHP Tuning](#php-tuning)
-- [first appeared in Nginx 1.5.6 (1.6.0 stable) and can be used to turn buffering completely on/off. It's on by default.](#first-appeared-in-nginx-156-160-stable-and-can-be-used-to-turn-buffering-completely-onoff-its-on-by-default)
-- [A special buffer space used to hold the first part of the FastCGI response, which is going to be the HTTP response headers.](#a-special-buffer-space-used-to-hold-the-first-part-of-the-fastcgi-response-which-is-going-to-be-the-http-response-headers)
-- [You shouldn't need to adjust this from the default - even if Nginx defaults to the smallest page size of 4KB (your platform will determine if 4/8k buffer) it should fit your typical HTTP header.](#you-shouldnt-need-to-adjust-this-from-the-default-even-if-nginx-defaults-to-the-smallest-page-size-of-4kb-your-platform-will-determine-if-48k-buffer-it-should-fit-your-typical-http-header)
-- [The one exception I have seen are frameworks that push large amounts of cookie data via the Set-Cookie HTTP header during their user verification/login phase - blowing out the buffer and resulting in a HTTP 500 error. In those instances you will need to increase this buffer to 8k/16k/32k to fully accommodate your largest upstream HTTP header being pushed.](#the-one-exception-i-have-seen-are-frameworks-that-push-large-amounts-of-cookie-data-via-the-set-cookie-http-header-during-their-user-verificationlogin-phase-blowing-out-the-buffer-and-resulting-in-a-http-500-error-in-those-instances-you-will-need-to-increase-this-buffer-to-8k16k32k-to-fully-accommodate-your-largest-upstream-http-header-being-pushed)
-- [So a total of 8 buffer segments at either 4k/8k, which is determined by the platform memory page size. For Debian/Ubuntu Linux that turns out to be 4096 bytes (4K) - so a default total buffer size of 32KB.](#so-a-total-of-8-buffer-segments-at-either-4k8k-which-is-determined-by-the-platform-memory-page-size-for-debianubuntu-linux-that-turns-out-to-be-4096-bytes-4k-so-a-default-total-buffer-size-of-32kb)
-- [If you response size average tips on the higher side you might want to alternatively lower the buffer segment count and raise the memory size in page size multiples (8k/16k/32k).](#if-you-response-size-average-tips-on-the-higher-side-you-might-want-to-alternatively-lower-the-buffer-segment-count-and-raise-the-memory-size-in-page-size-multiples-8k16k32k)
-- [Limits the size of data written to a temporary file at a time, when buffering of responses from the FastCGI server to temporary files is enabled. By default, size is limited by two buffers set by the fastcgi_buffer_size and fastcgi_buffers directives. The maximum size of a temporary file is set by the fastcgi_max_temp_file_size directive.](#limits-the-size-of-data-written-to-a-temporary-file-at-a-time-when-buffering-of-responses-from-the-fastcgi-server-to-temporary-files-is-enabled-by-default-size-is-limited-by-two-buffers-set-by-the-fastcgibuffersize-and-fastcgibuffers-directives-the-maximum-size-of-a-temporary-file-is-set-by-the-fastcgimaxtempfilesize-directive)
 			- [Logging](#logging)
 			- [Tip: Watching your logs](#tip-watching-your-logs)
-- [grep "/login.php??" /var/log/nginx/mysite.com-access](#grep-loginphp-varlognginxmysitecom-access)
-- [grep "...etc/passwd" /var/log/nginx/mysite.com-access](#grep-etcpasswd-varlognginxmysitecom-access)
-- [egrep -i "denied|error|warn" /var/log/nginx/mysite.com-error](#egrep-i-deniederrorwarn-varlognginxmysitecom-error)
 			- [Static asset serving & caching](#static-asset-serving-caching)
-			- [Extra: Block Referral Spam](#extra-block-referral-spam)
+			- [Extra: Block referral spam](#extra-block-referral-spam)
 			- [Extra: Block image hotlinking](#extra-block-image-hotlinking)
-- [Stop deep linking or hot linking](#stop-deep-linking-or-hot-linking)
 		- [Optimizing SSL on Nginx](#optimizing-ssl-on-nginx)
 	- [PHP](#php)
 		- [PHP Opcache](#php-opcache)
@@ -209,7 +197,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 ### Nginx tuning - making your servers fly :rocket:
 
 
-####Worker Processes and Worker Connections
+#### Worker Processes and Worker Connections
 
 Nginx uses a fixed number of workers, each of which handles incoming requests. The general rule of thumb is that you should have one worker for each CPU-core your server contains.
 You can count the CPUs available to your system by running: `grep processor /proc/cpuinfo | wc -l`
@@ -220,19 +208,19 @@ With a duo-core processor this would give you a configuration that started like 
 
 *File excerpt: /etc/nginx/nginx.conf*
 ````
-# One worker per CPU-core.
-worker_processes  2;
+    # One worker per CPU-core.
+    worker_processes  2;
 
-events {
-    worker_connections  1024;
-    multi_accept        on;
-    use                 epoll;
-}
+    events {
+        worker_connections  1024;
+        multi_accept        on;
+        use                 epoll;
+    }
 
-worker_rlimit_nofile 40000;
+    worker_rlimit_nofile 40000;
 ````
 
-####HTTP and TCP Optimizations
+#### HTTP and TCP Optimizations
 
 Keep alive allows for fewer reconnections from the browser.
 
@@ -262,7 +250,9 @@ http {
 > - We've enabled multi_accept which causes nginx to attempt to immediately accept as many connections as it can, subject to the kernel socket setup.
 > - Finally use of the epoll event-model is generally recommended for best throughput.
 
-####Buffer size
+
+
+#### Buffer size
 
 Another incredibly important tweak we can make is to the buffer size. If the buffer sizes are too low, then Nginx will have to write to a temporary file causing the disk to read and write constantly. There are a few directives we'll need to understand before making any decisions.
 
@@ -278,14 +268,16 @@ Another incredibly important tweak we can make is to the buffer size. If the buf
 
 *File excerpt: /etc/nginx/nginx.conf*
 ````
-client_body_buffer_size       128K;
-client_max_body_size           20m;
-client_header_buffer_size       1k;
-large_client_header_buffers   4 4k;
-output_buffers               1 32k;
+    client_body_buffer_size       128K;
+    client_max_body_size           20m;
+    client_header_buffer_size       1k;
+    large_client_header_buffers   4 4k;
+    output_buffers               1 32k;
 ````
 
-####Timeouts
+
+
+#### Timeouts
 
 Timeouts can also drastically improve performance.
 
@@ -297,185 +289,200 @@ Timeouts can also drastically improve performance.
 
 *File excerpt: /etc/nginx/nginx.conf*
 ````
-client_body_timeout         3m;
-client_header_timeout       3m;
-keepalive_timeout           3m;
-send_timeout                3m;
+    client_body_timeout         3m;
+    client_header_timeout       3m;
+    keepalive_timeout           3m;
+    send_timeout                3m;
 ````
 
-####Gzip compression
+
+
+#### Gzip compression
 
 Gzip can help reduce the amount of network transfer Nginx deals with. However, be careful increasing the gzip_comp_level too high as the server will begin wasting cpu cycles.
 
 ````
-gzip_vary                    on;
-gzip_proxied                any;
-gzip_comp_level               2;
-gzip_buffers              16 8k;
-gzip_http_version           1.1;
-gzip_types: text/html application/x-javascript text/css application/javascript text/javascript text/plain text/xml application/json application/vnd.ms-fontobject application/x-font-opentype application/x-font-truetype application/x-font-ttf application/xml font/eot font/opentype font/otf image/svg+xml image/vnd.microsoft.icon;
+    gzip_vary                    on;
+    gzip_proxied                any;
+    gzip_comp_level               2;
+    gzip_buffers              16 8k;
+    gzip_http_version           1.1;
+    gzip_types: text/html application/x-javascript text/css application/javascript text/javascript text/plain text/xml application/json application/vnd.ms-fontobject application/x-font-opentype application/x-font-truetype application/x-font-ttf application/xml font/eot font/opentype font/otf image/svg+xml image/vnd.microsoft.icon;
 ````
 
-####PHP Tuning
+
+
+#### PHP Tuning
 
 Since disk is slow and memory is fast the aim is to get as many FastCGI responses passing through memory only. On the flip side we don't want to set an excessively large buffer as they are created and sized on a per request basis (i.e. it's not shared memory).
 
 
 *file excerpt: /etc/nginx/nginx.conf*
 ````
-# first appeared in Nginx 1.5.6 (1.6.0 stable) and can be used to turn buffering completely on/off. It's on by default.
-fastcgi_buffering                 on;
+    # first appeared in Nginx 1.5.6 (1.6.0 stable) and can be used to turn buffering completely on/off. It's on by default.
+    fastcgi_buffering                 on;
 
-# A special buffer space used to hold the first part of the FastCGI response, which is going to be the HTTP response headers.
-# You shouldn't need to adjust this from the default - even if Nginx defaults to the smallest page size of 4KB (your platform will determine if 4/8k buffer) it should fit your typical HTTP header.
-# The one exception I have seen are frameworks that push large amounts of cookie data via the Set-Cookie HTTP header during their user verification/login phase - blowing out the buffer and resulting in a HTTP 500 error. In those instances you will need to increase this buffer to 8k/16k/32k to fully accommodate your largest upstream HTTP header being pushed.
-fastcgi_buffer_size             32k;
+    # A special buffer space used to hold the first part of the FastCGI response, which is going to be the HTTP response headers.
+    # You shouldn't need to adjust this from the default - even if Nginx defaults to the smallest page size of 4KB (your platform will determine if 4/8k buffer) it should fit your typical HTTP header.
+    # The one exception I have seen are frameworks that push large amounts of cookie data via the Set-Cookie HTTP header during their user verification/login phase - blowing out the buffer and resulting in a HTTP 500 error. In those instances you will need to increase this buffer to 8k/16k/32k to fully accommodate your largest upstream HTTP header being pushed.
+    fastcgi_buffer_size             32k;
 
-# So a total of 8 buffer segments at either 4k/8k, which is determined by the platform memory page size. For Debian/Ubuntu Linux that turns out to be 4096 bytes (4K) - so a default total buffer size of 32KB.
-Based on the maximum/average response sizes determined above we can now raise/lower these values to suit. I typically keep buffer size at the default (memory page size) and adjust only the buffer segment count to a value for keep the bulk/all responses handled fully in buffer RAM. The default memory page size (in bytes) can be determined by the following command: `$ getconf PAGESIZE`
+    # So a total of 8 buffer segments at either 4k/8k, which is determined by the platform memory page size. For Debian/Ubuntu Linux that turns out to be 4096 bytes (4K) - so a default total buffer size of 32KB.
+    Based on the maximum/average response sizes determined above we can now raise/lower these values to suit. I typically keep buffer size at the default (memory page size) and adjust only the buffer segment count to a value for keep the bulk/all responses handled fully in buffer RAM. The default memory page size (in bytes) can be determined by the following command: `$ getconf PAGESIZE`
 
-# If you response size average tips on the higher side you might want to alternatively lower the buffer segment count and raise the memory size in page size multiples (8k/16k/32k).
-fastcgi_buffers               32 32k;
-fastcgi_busy_buffers_size     32 32k;
+    # If you response size average tips on the higher side you might want to alternatively lower the buffer segment count and raise the memory size in page size multiples (8k/16k/32k).
+    fastcgi_buffers               32 32k;
+    fastcgi_busy_buffers_size     32 32k;
 
-# Limits the size of data written to a temporary file at a time, when buffering of responses from the FastCGI server to temporary files is enabled. By default, size is limited by two buffers set by the fastcgi_buffer_size and fastcgi_buffers directives. The maximum size of a temporary file is set by the fastcgi_max_temp_file_size directive.
-fastcgi_temp_file_write_size  32 32k;
+    # Limits the size of data written to a temporary file at a time, when buffering of responses from the FastCGI server to temporary files is enabled. By default, size is limited by two buffers set by the fastcgi_buffer_size and fastcgi_buffers directives. The maximum size of a temporary file is set by the fastcgi_max_temp_file_size directive.
+    fastcgi_temp_file_write_size  32 32k;
 ````
 
-####Logging
+
+
+#### Logging
 
 The access_log portion defines the directive, the log_file portion defines the location of the access.log file, the log_format portion can be defined using variables (default format is combined). If you don’t require this information then it’s preferable to disable it, which will save your environment a bunch of additional processing and hard drive space too. The following shows an example of what the “combined” log_format looks like:
 
 ````
-log_format combined '$remote_addr - $remote_user [$time_local]  '
-    '"$request" $status $body_bytes_sent '
-    '"$http_referer" "$http_user_agent"';
+    log_format combined '$remote_addr - $remote_user [$time_local]  '
+        '"$request" $status $body_bytes_sent '
+        '"$http_referer" "$http_user_agent"';
 ````
 
 Therefore, when defining each portion of the access log directive, it may resemble the following:
 
 ````
-access_log /var/log/nginx/mysite.com-access.log log_file combined;
+    access_log /var/log/nginx/mysite.com-access.log log_file combined;
 ````
 
-####Tip: Watching your logs
+
+
+
+#### Tip: Watching your logs
 
 They will give you some understanding of what attacks is thrown against the server and allow you to check if the necessary level of security is present or not.
 
 ````
-# grep "/login.php??" /var/log/nginx/mysite.com-access
-# grep "...etc/passwd" /var/log/nginx/mysite.com-access
-# egrep -i "denied|error|warn" /var/log/nginx/mysite.com-error
+    # grep "/login.php??" /var/log/nginx/mysite.com-access
+    # grep "...etc/passwd" /var/log/nginx/mysite.com-access
+    # egrep -i "denied|error|warn" /var/log/nginx/mysite.com-error
 ````
 
 Tip: You can install the open source tool [GoAccess](https://goaccess.io/) to analyize your logs. Or use the online tool https://papertrailapp.com/ for frustration-free log management.
 
 
-####Static asset serving & caching
+
+
+#### Static asset serving & caching
 
 If your site serves static assets (such as CSS/JavaScript/images), Nginx can cache these files for a short period of time. Adding this within your configuration block tells Nginx to cache 1000 files for 30 seconds, excluding any files that haven’t been accessed in 20 seconds, and only files that have 5 times or more. If you aren’t deploying frequently you can safely bump up these numbers higher.
 
 *File excerpt: /etc/nginx/nginx.conf*
 ````
-open_file_cache max=1000 inactive=20s;
-open_file_cache_valid 30s;
-open_file_cache_min_uses 5;
-open_file_cache_errors off;
+    open_file_cache max=1000 inactive=20s;
+    open_file_cache_valid 30s;
+    open_file_cache_min_uses 5;
+    open_file_cache_errors off;
 ````
 
 It's possible to set expire headers for files that don't change and are served regularly. This directive can be added to the actual Nginx server block.
 
 *File excerpt: /etc/nginx/nginx.conf*
 ````
-location ~* (?:^|/)\. {
-    deny all;
-}
+    location ~* (?:^|/)\. {
+        deny all;
+    }
 
-location ~* (?:\.(?:bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)|~)$ {
-    deny all;
-}
+    location ~* (?:\.(?:bak|config|sql|fla|psd|ini|log|sh|inc|swp|dist)|~)$ {
+        deny all;
+    }
 
-location ~* \.(?:manifest|appcache|html?|xml|json)$ {
-    try_files $uri /index.php?$query_string;
-    expires -1;
-}
+    location ~* \.(?:manifest|appcache|html?|xml|json)$ {
+        try_files $uri /index.php?$query_string;
+        expires -1;
+    }
 
-location ~* \.(?:rss|atom)$ {
-    expires 1h;
-    add_header Cache-Control "public";
-}
+    location ~* \.(?:rss|atom)$ {
+        expires 1h;
+        add_header Cache-Control "public";
+    }
 
-location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
-    try_files $uri /index.php?$query_string;
-    expires 1M;
-    add_header Cache-Control "public";
-    etag off;
-    access_log off;
-    log_not_found off;
-}
+    location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+        try_files $uri /index.php?$query_string;
+        expires 1M;
+        add_header Cache-Control "public";
+        etag off;
+        access_log off;
+        log_not_found off;
+    }
 
-location ~* \.(?:css|js)$ {
-    try_files $uri /index.php?$query_string;
-    expires 1y;
-    add_header Cache-Control "public";
-    etag off;
-    access_log off;
-    log_not_found off;
-}
+    location ~* \.(?:css|js)$ {
+        try_files $uri /index.php?$query_string;
+        expires 1y;
+        add_header Cache-Control "public";
+        etag off;
+        access_log off;
+        log_not_found off;
+    }
 
-location ~* \.(?:ttf|ttc|otf|eot|woff)$ {
-    try_files $uri /index.php?$query_string;
-    expires 1y;
-    add_header Cache-Control "public";
-    etag off;
-    access_log off;
-    log_not_found off;
-}
+    location ~* \.(?:ttf|ttc|otf|eot|woff)$ {
+        try_files $uri /index.php?$query_string;
+        expires 1y;
+        add_header Cache-Control "public";
+        etag off;
+        access_log off;
+        log_not_found off;
+    }
 
-location ~ /\.ht {
-    deny all;
-}
+    location ~ /\.ht {
+        deny all;
+    }
 ````
 
-####Extra: Block Referral Spam
+
+
+#### Extra: Block referral spam
 
 Inside the `nginx.conf` file add an HTTP map like the one below, adding an entry for each of the spam domains. Value of **1** is considered to be **spam**, **0** for **legitimate** traffic.
 The `~*` before each domain means case-insensitive matching.
 
 ````
-http {
-    map $http_referer $bad_referer {
-        default                  0;
-        "~*spamdomain1.com"       1;
-        "~*spamdomain2.com"       1;
-        "~*spamdomain3.com"       1;
-    }
-}
-
-server {    
-    location / {
-        # Check to see if the $bad_referer variable is set to 1 (true), and if so return an HTTP status code of 444 which is a 'No Response'. No information is returned to the spammer. It also will use less server resources.
-        if ($bad_referer) {
-            return 444;
+    http {
+        map $http_referer $bad_referer {
+            default                  0;
+            "~*spamdomain1.com"       1;
+            "~*spamdomain2.com"       1;
+            "~*spamdomain3.com"       1;
         }
     }
-}
+
+    server {    
+        location / {
+            # Check to see if the $bad_referer variable is set to 1 (true), and if so return an HTTP status code of 444 which is a 'No Response'. No information is returned to the spammer. It also will use less server resources.
+            if ($bad_referer) {
+                return 444;
+            }
+        }
+    }
 
 ````
 Now to test that blocking is actually working we can run the following curl command: `curl -e "http://spamdomain1.com" "http://yoursite.com"` Which should return a message like: `curl: (52) Empty reply from server`
 
-####Extra: Block image hotlinking
+
+
+#### Extra: Block image hotlinking
 
 Image or HTML hotlinking means someone makes a link to your site to one of your images, but displays it on their own site. I strongly suggest you block and stop image hotlinking at your server level itself.
 
 ````
-# Stop deep linking or hot linking
-location ~ .(gif|png|webm|jpe?g)$ {
-    valid_referers none blocked ~.google. ~.bing. ~.yahoo. server_names ~($host);
-    if ($invalid_referer) {
-        return   403;
+    # Stop deep linking or hot linking
+    location ~ .(gif|png|webm|jpe?g)$ {
+        valid_referers none blocked ~.google. ~.bing. ~.yahoo. server_names ~($host);
+        if ($invalid_referer) {
+            return   403;
+        }
     }
-}
 ````
 
 
