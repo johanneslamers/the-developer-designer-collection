@@ -9,53 +9,53 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 Table of Contents
 ----
 
-<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:1 -->
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-1. [Quick web development checklist](#quick-web-development-checklist)
-	1. [Fit and finish](#fit-and-finish)
-	2. [Mobile](#mobile)
-	3. [Analytics](#analytics)
-	4. [Accessibility](#accessibility)
-	5. [Code quality](#code-quality)
-	6. [Performance](#performance)
-	7. [Semantics](#semantics)
-	8. [SEO](#seo)
-	9. [Server & Security](#server-security)
-2. [HTTP](#http)
-	1. [:key: HTTP Security Headers](#key-http-security-headers)
-	2. [HTTP Cache Headers](#http-cache-headers)
-3. [Nginx](#nginx)
-	1. [Nginx tuning - making your servers fly :rocket:](#nginx-tuning-making-your-servers-fly-rocket)
-		1. [Worker Processes and Worker Connections](#worker-processes-and-worker-connections)
-		2. [HTTP and TCP Optimizations](#http-and-tcp-optimizations)
-		3. [Buffer size](#buffer-size)
-		4. [Timeouts](#timeouts)
-		5. [Gzip compression](#gzip-compression)
-		6. [PHP Tuning](#php-tuning)
-		7. [Logging](#logging)
-		8. [Tip: Watching your logs](#tip-watching-your-logs)
-		9. [Static asset serving & caching](#static-asset-serving-caching)
-		10. [Extra: Block referral spam](#extra-block-referral-spam)
-		11. [Extra: Block image hotlinking](#extra-block-image-hotlinking)
-	2. [Optimizing SSL on Nginx](#optimizing-ssl-on-nginx)
-4. [PHP](#php)
-	1. [PHP Opcache](#php-opcache)
-5. [Tools & Services](#tools-services)
-	1. [Security](#security)
-	2. [Webmasters](#webmasters)
-	3. [Analytics](#analytics)
-	4. [Browser Testing](#browser-testing)
-	5. [Monitoring & logging](#monitoring-logging)
-	6. [Optimization](#optimization)
-	7. [Structured Data](#structured-data)
-	8. [Keywords](#keywords)
-	9. [Links](#links)
-	10. [Bookmarklets & Browser Extensions](#bookmarklets-browser-extensions)
-	11. [Browser Extensions](#browser-extensions)
-	12. [Good Reads](#good-reads)
-6. [How to Contribute](#how-to-contribute)
-7. [Feedback](#feedback)
-8. [License](#license)
+- [Quick web development checklist](#quick-web-development-checklist)
+	- [Fit and finish](#fit-and-finish)
+	- [Mobile](#mobile)
+	- [Analytics](#analytics)
+	- [Accessibility](#accessibility)
+	- [Code quality](#code-quality)
+	- [Performance](#performance)
+	- [Semantics](#semantics)
+	- [SEO](#seo)
+	- [Server & Security](#server-security)
+- [HTTP](#http)
+	- [:key: HTTP Security Headers](#key-http-security-headers)
+	- [HTTP Cache Headers](#http-cache-headers)
+- [Nginx](#nginx)
+	- [Nginx tuning - making your servers fly :rocket:](#nginx-tuning-making-your-servers-fly-rocket)
+		- [Worker Processes and Worker Connections](#worker-processes-and-worker-connections)
+		- [HTTP and TCP Optimizations](#http-and-tcp-optimizations)
+		- [Buffer size](#buffer-size)
+		- [Timeouts](#timeouts)
+		- [Gzip compression](#gzip-compression)
+		- [PHP Tuning](#php-tuning)
+		- [Logging](#logging)
+		- [Tip: Watching your logs](#tip-watching-your-logs)
+		- [Static asset serving & caching](#static-asset-serving-caching)
+		- [Extra: Block referral spam](#extra-block-referral-spam)
+		- [Extra: Block image hotlinking](#extra-block-image-hotlinking)
+	- [Optimizing SSL on Nginx](#optimizing-ssl-on-nginx)
+- [PHP](#php)
+	- [PHP Opcache](#php-opcache)
+- [Tools & Services](#tools-services)
+	- [Security](#security)
+	- [Webmasters](#webmasters)
+	- [Analytics](#analytics)
+	- [Browser Testing](#browser-testing)
+	- [Monitoring & logging](#monitoring-logging)
+	- [Optimization](#optimization)
+	- [Structured Data](#structured-data)
+	- [Keywords](#keywords)
+	- [Links](#links)
+	- [Bookmarklets & Browser Extensions](#bookmarklets-browser-extensions)
+	- [Browser Extensions](#browser-extensions)
+	- [Good Reads](#good-reads)
+- [How to Contribute](#how-to-contribute)
+- [Feedback](#feedback)
+- [License](#license)
 
 <!-- /TOC -->
 
@@ -240,7 +240,6 @@ http {
     # optimizes the amount of data sent down the wire at once by activating the TCP_CORK option within the TCP stack. TCP_CORK blocks the data until the packet reaches the MSS, which is equal to the MTU minus the 40 or 60 bytes of the IP header.
     tcp_nodelay        on;
 
-
     # Your content here ..
 }
 ````
@@ -352,7 +351,7 @@ The access_log portion defines the directive, the log_file portion defines the l
 
 Therefore, when defining each portion of the access log directive, it may resemble the following:
 
-````
+````nginx
     access_log /var/log/nginx/mysite.com-access.log log_file combined;
 ````
 
@@ -491,12 +490,12 @@ Image or HTML hotlinking means someone makes a link to your site to one of your 
 - **HTTP/2** - In your site’s Nginx configuration file add `listen 443 ssl http2;` to the end of the listen line for the server block
 - **HTTP Strict Transport Security header** :100:
 
-    ````
+    ````nginx
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains"
     ````
 - **Connection Credentials Caching**
 
-    ````
+    ````nginx
     ssl_session_cache shared:SSL:20m;
     ssl_session_timeout 180m;
     ````
@@ -512,7 +511,7 @@ Image or HTML hotlinking means someone makes a link to your site to one of your 
 
     So, we’ll add this line to our config then:
 
-    ````
+    ````nginx
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ````
 - **Optimizing the cipher suites**
@@ -521,13 +520,13 @@ Image or HTML hotlinking means someone makes a link to your site to one of your 
 
     First you need to configure Nginx to tell the client that we have a preferred order of available cipher suites:
 
-    ````
+    ````nginx
     ssl_prefer_server_ciphers on;
     ````
 
     Next we have to provide the actual list of ciphers:
 
-    ````
+    ````nginx
     ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
     ````
 
