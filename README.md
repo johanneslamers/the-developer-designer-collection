@@ -6,22 +6,63 @@ A continuously expanded collection of front-end resources, best practices, deplo
 All idea's, feature requests, pull requests, feedback, etc., are welcome. [Create an issue](https://github.com/johanneslamers/Deployment-guide-for-developers/issues).
 
 ## Table of Contents
-* [Quick web development checklist](#quick-web-development-checklist)
-* [HTTP](#http)
-    * [HTTP Security Headers](http-security-headers)
-    * [HTTP Cache Headers](http-cache-headers)
-* [Nginx](#nginx)
-    * [Optimizing SSL on nginx](optimizing-ssl-on-nginx)
-    * [Nginx config](nginx-config)
-* [PHP](#php)
-    * [PHP Opcache](php-opcache)
 
-* [Resources & Links](resources-links)
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [:sparkles: Ultimate developer / designer collection  :sparkles:](#sparkles-ultimate-developer-designer-collection-sparkles)
+	- [Table of Contents](#table-of-contents)
+	- [Quick web development checklist](#quick-web-development-checklist)
+		- [Fit and finish](#fit-and-finish)
+		- [Mobile](#mobile)
+		- [Analytics](#analytics)
+		- [Accessibility](#accessibility)
+		- [Code quality](#code-quality)
+		- [Performance](#performance)
+		- [Semantics](#semantics)
+		- [SEO](#seo)
+		- [Server & Security](#server-security)
+	- [HTTP](#http)
+		- [:key: HTTP Security Headers](#key-http-security-headers)
+		- [HTTP Cache Headers](#http-cache-headers)
+	- [Nginx](#nginx)
+		- [Nginx tuning - making your servers fly :rocket:](#nginx-tuning-making-your-servers-fly-rocket)
+			- [Worker Processes and Worker Connections](#worker-processes-and-worker-connections)
+			- [HTTP and TCP Optimizations](#http-and-tcp-optimizations)
+			- [Buffer size](#buffer-size)
+			- [Timeouts](#timeouts)
+			- [Gzip compression](#gzip-compression)
+			- [PHP Tuning](#php-tuning)
+			- [Logging](#logging)
+			- [Tip: Watching your logs](#tip-watching-your-logs)
+			- [Static asset serving & caching](#static-asset-serving-caching)
+			- [Extra: Block Referral Spam](#extra-block-referral-spam)
+			- [Extra: Block image hotlinking](#extra-block-image-hotlinking)
+		- [Optimizing SSL on Nginx](#optimizing-ssl-on-nginx)
+	- [PHP](#php)
+		- [PHP Opcache](#php-opcache)
+	- [Tools & Services](#tools-services)
+		- [Security](#security)
+		- [Webmasters](#webmasters)
+		- [Analytics](#analytics)
+		- [Browser Testing](#browser-testing)
+		- [Monitoring & logging](#monitoring-logging)
+		- [Optimization](#optimization)
+		- [Structured Data](#structured-data)
+		- [Keywords](#keywords)
+		- [Links](#links)
+		- [Bookmarklets & Browser Extensions](#bookmarklets-browser-extensions)
+		- [Browser Extensions](#browser-extensions)
+		- [Good Reads](#good-reads)
+	- [How to Contribute](#how-to-contribute)
+	- [Feedback](#feedback)
+	- [License](#license)
+
+<!-- /TOC -->
 
 -----
 ## Quick web development checklist
 
-#### Fit and finish
+### Fit and finish
 - [ ] **Fix broken links**
 - [ ] **Spell check**
 - [ ] **Cross browser testing**
@@ -32,31 +73,31 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 - [ ] **Friendly URL's**
 - [ ] **Duplicated content**
 
-#### Mobile
+### Mobile
 - [ ] **Mobile score 75+**
 - [ ] **'Viewport' meta tag**
 - [ ] **Correct input types**
 - [ ] **Manual check**
 - [ ] **Check using emulators**
 
-#### Analytics
+### Analytics
 - [ ] **Uptime monitoring**
 - [ ] **Traffic Analytics**
 - [ ] **Block your IP on Analytics**
 - [ ] **Google webmaster tools**
 
-#### Accessibility
+### Accessibility
 - [ ] **Accessibility validation**
 - [ ] **Color contrast**
 - [ ] **WAI-ARIA**
 
-#### Code quality
+### Code quality
 - [ ] **HTML Validation**
 - [ ] **CSS Validation**
 - [ ] **CSS Lint**
 - [ ] **JS Lint**
 
-#### Performance
+### Performance
 - [ ] **Page speed score 85+**
 - [ ] **Yahoo YSlow score 85+**
 - [ ] **Web page test score 90+**
@@ -66,11 +107,11 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 - [ ] **Optimize images**
 - [ ] **HTTP2**
 
-#### Semantics
+### Semantics
 - [ ] **Add meaning with Microdata - JSON-LD**
 - [ ] **Validate semantics**
 
-#### SEO
+### SEO
 - [ ] **SenSEO score 85+**
 - [ ] **Varvy SEO test**
 - [ ] **robots.txt**
@@ -134,9 +175,11 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     | 4             | `max-stale` = seconds. Indicates that the client is willing to accept a response that has exceeded its expiration time. If seconds are given, it must not be expired by more than that time.     |
     | 5             | `min-fresh` = seconds. Indicates that the client is willing to accept a response whose freshness lifetime is not less than its current age plus the specified time in seconds.     |
     | 6             | `no-transform`. Does not convert the entity-body.    |
+
 - **Pragma**
 
     The old “pragma” header accomplishes many things most of them characterised by newer implementations. We are however most concerned with the `pragma: no-cache` directive which is interpreted by newer implementations as `cache-control: no-cache`. You don’t need to be concerned about this directive because it’s a request header which will be ignored by KeyCDN’s edge servers. It is however important to be aware of the directive for the overall understanding. Going forward, there won’t be new HTTP directives defined for pragma.
+
 - **Expires**
 
     A couple of years back, this was the main way of specifying when assets expires. Expires is simply a basic date-time stamp. It’s fairly useful for old user agents which still roam unchartered territories. It is however important to note that cache-control headers, max-age and s-maxage still take precedence on most modern systems. It’s however good practice to set matching values here for the sake of compatibility. It’s also important to ensure you format the date properly or it might be considered as expired.
@@ -147,14 +190,14 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 
     To avoid breaking the specification, avoid setting the date value to more than a year.
 
-
+----
 
 ## Nginx
 
 ### Nginx tuning - making your servers fly :rocket:
 
 
-- **Worker Processes and Worker Connections**
+####Worker Processes and Worker Connections
 
     Nginx uses a fixed number of workers, each of which handles incoming requests. The general rule of thumb is that you should have one worker for each CPU-core your server contains.
     You can count the CPUs available to your system by running: `grep processor /proc/cpuinfo | wc -l`
@@ -177,7 +220,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     worker_rlimit_nofile 40000;
     ````
 
-- **HTTP and TCP Optimizations**
+####HTTP and TCP Optimizations
 
     Keep alive allows for fewer reconnections from the browser.
 
@@ -207,7 +250,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     > - We've enabled multi_accept which causes nginx to attempt to immediately accept as many connections as it can, subject to the kernel socket setup.
     > - Finally use of the epoll event-model is generally recommended for best throughput.
 
-- **Buffer size**
+####Buffer size
 
     Another incredibly important tweak we can make is to the buffer size. If the buffer sizes are too low, then Nginx will have to write to a temporary file causing the disk to read and write constantly. There are a few directives we'll need to understand before making any decisions.
 
@@ -230,7 +273,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     output_buffers               1 32k;
     ````
 
-- **Timeouts**
+####Timeouts
 
     Timeouts can also drastically improve performance.
 
@@ -248,7 +291,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     send_timeout                3m;
     ````
 
-- **Gzip compression** Add this to your nginx config above the server part:
+####Gzip compression
 
     Gzip can help reduce the amount of network transfer Nginx deals with. However, be careful increasing the gzip_comp_level too high as the server will begin wasting cpu cycles.
 
@@ -261,7 +304,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     gzip_types: text/html application/x-javascript text/css application/javascript text/javascript text/plain text/xml application/json application/vnd.ms-fontobject application/x-font-opentype application/x-font-truetype application/x-font-ttf application/xml font/eot font/opentype font/otf image/svg+xml image/vnd.microsoft.icon;
     ````
 
-- **PHP Tuning**
+####PHP Tuning
 
     Since disk is slow and memory is fast the aim is to get as many FastCGI responses passing through memory only. On the flip side we don't want to set an excessively large buffer as they are created and sized on a per request basis (i.e. it's not shared memory).
 
@@ -287,7 +330,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     fastcgi_temp_file_write_size  32 32k;
     ````
 
-- **Nginx logs**
+####Logging
 
     The access_log portion defines the directive, the log_file portion defines the location of the access.log file, the log_format portion can be defined using variables (default format is combined). If you don’t require this information then it’s preferable to disable it, which will save your environment a bunch of additional processing and hard drive space too. The following shows an example of what the “combined” log_format looks like:
 
@@ -303,7 +346,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     access_log /var/log/nginx/mysite.com-access.log log_file combined;
     ````
 
-- **Tip: Watching Your Logs**
+####Tip: Watching your logs
 
     They will give you some understanding of what attacks is thrown against the server and allow you to check if the necessary level of security is present or not.
 
@@ -316,7 +359,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     Tip: You can install the open source tool [GoAccess](https://goaccess.io/) to analyize your logs. Or use the online tool https://papertrailapp.com/ for frustration-free log management.
 
 
-- **Static asset serving & caching**
+####Static asset serving & caching
 
     If your site serves static assets (such as CSS/JavaScript/images), Nginx can cache these files for a short period of time. Adding this within your configuration block tells Nginx to cache 1000 files for 30 seconds, excluding any files that haven’t been accessed in 20 seconds, and only files that have 5 times or more. If you aren’t deploying frequently you can safely bump up these numbers higher.
 
@@ -382,7 +425,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     }
     ````
 
-- **Extra: Block Referral Spam**
+####Extra: Block Referral Spam
 
     Inside the `nginx.conf` file add an HTTP map like the one below, adding an entry for each of the spam domains. Value of **1** is considered to be **spam**, **0** for **legitimate** traffic.
     The `~*` before each domain means case-insensitive matching.
@@ -409,7 +452,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     ````
     Now to test that blocking is actually working we can run the following curl command: `curl -e "http://spamdomain1.com" "http://yoursite.com"` Which should return a message like: `curl: (52) Empty reply from server`
 
-- **Extra: Block image hotlinking**
+####Extra: Block image hotlinking
 
     Image or HTML hotlinking means someone makes a link to your site to one of your images, but displays it on their own site. I strongly suggest you block and stop image hotlinking at your server level itself.
 
@@ -529,7 +572,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 
 ### Monitoring & logging
 - **[GoAccess](https://goaccess.io/)**
-- **[Papertrail](https://papertrailapp.com/)**
+- **[Papertrail](https://papertrailapp.com/)** :100:
 
 ### Optimization
 - **[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)**
@@ -555,7 +598,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 - **[Screaming Frog SEO Spider Tool & Crawler Software](https://www.screamingfrog.co.uk/seo-spider/)**
 - **[Search Engine Spider Simulator](http://tools.seochat.com/tools/search-spider-simulator)**
 
-### Bookmarklets
+### Bookmarklets & Browser Extensions
 - **[OuiSEO](https://github.com/carlsednaoui/seo-bookmarklet)**
 - **[SEO Bookmarklet](https://twkm.ca/projects/seo-bookmarklet)**
 
@@ -565,7 +608,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 - **[MozBar](https://moz.com/tools/seo-toolbar)**
 - **[SenSEO for firefox](https://addons.mozilla.org/en-US/firefox/addon/senseo/)**
 
-### Good reads
+### Good Reads
 - **[Servers for hackers](https://serversforhackers.com/)** :100:
 - **[Scott Helme](https://scotthelme.co.uk/)** :100:
 
