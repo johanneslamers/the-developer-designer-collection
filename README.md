@@ -287,6 +287,34 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     fastcgi_temp_file_write_size  32 32k;
     ````
 
+- **Nginx logs**
+
+    The access_log portion defines the directive, the log_file portion defines the location of the access.log file, the log_format portion can be defined using variables (default format is combined). If you don’t require this information then it’s preferable to disable it, which will save your environment a bunch of additional processing and hard drive space too. The following shows an example of what the “combined” log_format looks like:
+
+    ````
+    log_format combined '$remote_addr - $remote_user [$time_local]  '
+        '"$request" $status $body_bytes_sent '
+        '"$http_referer" "$http_user_agent"';
+    ````
+
+    Therefore, when defining each portion of the access log directive, it may resemble the following:
+
+    ````
+    access_log /var/log/nginx/mysite.com-access.log log_file combined;
+    ````
+
+- **Tip: Watching Your Logs**
+
+    They will give you some understanding of what attacks is thrown against the server and allow you to check if the necessary level of security is present or not.
+
+    ````
+    # grep "/login.php??" /var/log/nginx/mysite.com-access
+    # grep "...etc/passwd" /var/log/nginx/mysite.com-access
+    # egrep -i "denied|error|warn" /var/log/nginx/mysite.com-error
+    ````
+
+    Tip: You can install the open source tool [GoAccess](https://goaccess.io/) to analyize your logs. Or use the online tool https://papertrailapp.com/ for frustration-free log management.
+
 
 - **Static asset serving & caching**
 
@@ -395,6 +423,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     }
     ````
 
+
 ### Optimizing SSL on Nginx
 - **Patch LOGJAM Vulnerability**
 - **HTTP/2** - In your site’s Nginx configuration file add `listen 443 ssl http2;` to the end of the listen line for the server block
@@ -439,6 +468,7 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
     ````
     ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
     ````
+
 
 
 
@@ -496,6 +526,10 @@ All idea's, feature requests, pull requests, feedback, etc., are welcome. [Creat
 
 ### Browser Testing
 - **[Browserling](https://www.browserling.com/)**
+
+### Monitoring & logging
+- **[GoAccess](https://goaccess.io/)**
+- **[Papertrail](https://papertrailapp.com/)**
 
 ### Optimization
 - **[PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)**
