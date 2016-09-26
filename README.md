@@ -1,61 +1,61 @@
-# :sparkles: Ultimate developer / designer collection :sparkles:
+:sparkles: Ultimate developer / designer collection :sparkles:
+====
 
 [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
 A continuously expanded collection of front-end resources, best practices, deployment tips, server configurations, security & resources
 All idea's, feature requests, pull requests, feedback, etc., are welcome. [Create an issue](https://github.com/johanneslamers/Deployment-guide-for-developers/issues).
 
-## Table of Contents
+Table of Contents
+----
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:2 depthTo:6 withLinks:1 updateOnSave:1 orderedList:1 -->
 
-- [:sparkles: Ultimate developer / designer collection :sparkles:](#sparkles-ultimate-developer-designer-collection-sparkles)
-	- [Table of Contents](#table-of-contents)
-	- [Quick web development checklist](#quick-web-development-checklist)
-		- [Fit and finish](#fit-and-finish)
-		- [Mobile](#mobile)
-		- [Analytics](#analytics)
-		- [Accessibility](#accessibility)
-		- [Code quality](#code-quality)
-		- [Performance](#performance)
-		- [Semantics](#semantics)
-		- [SEO](#seo)
-		- [Server & Security](#server-security)
-	- [HTTP](#http)
-		- [:key: HTTP Security Headers](#key-http-security-headers)
-		- [HTTP Cache Headers](#http-cache-headers)
-	- [Nginx](#nginx)
-		- [Nginx tuning - making your servers fly :rocket:](#nginx-tuning-making-your-servers-fly-rocket)
-			- [Worker Processes and Worker Connections](#worker-processes-and-worker-connections)
-			- [HTTP and TCP Optimizations](#http-and-tcp-optimizations)
-			- [Buffer size](#buffer-size)
-			- [Timeouts](#timeouts)
-			- [Gzip compression](#gzip-compression)
-			- [PHP Tuning](#php-tuning)
-			- [Logging](#logging)
-			- [Tip: Watching your logs](#tip-watching-your-logs)
-			- [Static asset serving & caching](#static-asset-serving-caching)
-			- [Extra: Block referral spam](#extra-block-referral-spam)
-			- [Extra: Block image hotlinking](#extra-block-image-hotlinking)
-		- [Optimizing SSL on Nginx](#optimizing-ssl-on-nginx)
-	- [PHP](#php)
-		- [PHP Opcache](#php-opcache)
-	- [Tools & Services](#tools-services)
-		- [Security](#security)
-		- [Webmasters](#webmasters)
-		- [Analytics](#analytics)
-		- [Browser Testing](#browser-testing)
-		- [Monitoring & logging](#monitoring-logging)
-		- [Optimization](#optimization)
-		- [Structured Data](#structured-data)
-		- [Keywords](#keywords)
-		- [Links](#links)
-		- [Bookmarklets & Browser Extensions](#bookmarklets-browser-extensions)
-		- [Browser Extensions](#browser-extensions)
-		- [Good Reads](#good-reads)
-	- [How to Contribute](#how-to-contribute)
-	- [Feedback](#feedback)
-	- [License](#license)
+1. [Quick web development checklist](#quick-web-development-checklist)
+	1. [Fit and finish](#fit-and-finish)
+	2. [Mobile](#mobile)
+	3. [Analytics](#analytics)
+	4. [Accessibility](#accessibility)
+	5. [Code quality](#code-quality)
+	6. [Performance](#performance)
+	7. [Semantics](#semantics)
+	8. [SEO](#seo)
+	9. [Server & Security](#server-security)
+2. [HTTP](#http)
+	1. [:key: HTTP Security Headers](#key-http-security-headers)
+	2. [HTTP Cache Headers](#http-cache-headers)
+3. [Nginx](#nginx)
+	1. [Nginx tuning - making your servers fly :rocket:](#nginx-tuning-making-your-servers-fly-rocket)
+		1. [Worker Processes and Worker Connections](#worker-processes-and-worker-connections)
+		2. [HTTP and TCP Optimizations](#http-and-tcp-optimizations)
+		3. [Buffer size](#buffer-size)
+		4. [Timeouts](#timeouts)
+		5. [Gzip compression](#gzip-compression)
+		6. [PHP Tuning](#php-tuning)
+		7. [Logging](#logging)
+		8. [Tip: Watching your logs](#tip-watching-your-logs)
+		9. [Static asset serving & caching](#static-asset-serving-caching)
+		10. [Extra: Block referral spam](#extra-block-referral-spam)
+		11. [Extra: Block image hotlinking](#extra-block-image-hotlinking)
+	2. [Optimizing SSL on Nginx](#optimizing-ssl-on-nginx)
+4. [PHP](#php)
+	1. [PHP Opcache](#php-opcache)
+5. [Tools & Services](#tools-services)
+	1. [Security](#security)
+	2. [Webmasters](#webmasters)
+	3. [Analytics](#analytics)
+	4. [Browser Testing](#browser-testing)
+	5. [Monitoring & logging](#monitoring-logging)
+	6. [Optimization](#optimization)
+	7. [Structured Data](#structured-data)
+	8. [Keywords](#keywords)
+	9. [Links](#links)
+	10. [Bookmarklets & Browser Extensions](#bookmarklets-browser-extensions)
+	11. [Browser Extensions](#browser-extensions)
+	12. [Good Reads](#good-reads)
+6. [How to Contribute](#how-to-contribute)
+7. [Feedback](#feedback)
+8. [License](#license)
 
 <!-- /TOC -->
 
@@ -207,7 +207,7 @@ The ~worker_connections~ command tells our worker processes how many people can 
 With a duo-core processor this would give you a configuration that started like so:
 
 *File excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
     # One worker per CPU-core.
     worker_processes  2;
 
@@ -225,7 +225,7 @@ With a duo-core processor this would give you a configuration that started like 
 Keep alive allows for fewer reconnections from the browser.
 
 *File excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
 http {
     # optimizes serving static files from the file system, like logos.
     keepalive_timeout  65;
@@ -267,7 +267,7 @@ Another incredibly important tweak we can make is to the buffer size. If the buf
 `output_buffers` sets the number and size of the buffers used for reading a response from a disk. If possible, the transmission of client data will be postponed until Nginx has at least the set size of bytes of data to send. The zero value disables postponing data transmission.
 
 *File excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
     client_body_buffer_size       128K;
     client_max_body_size           20m;
     client_header_buffer_size       1k;
@@ -288,7 +288,7 @@ Timeouts can also drastically improve performance.
 `send_timeout` is established not on the entire transfer of answer, but only between two operations of reading; if after this time client will take nothing, then Nginx is shutting down the connection.
 
 *File excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
     client_body_timeout         3m;
     client_header_timeout       3m;
     keepalive_timeout           3m;
@@ -301,7 +301,7 @@ Timeouts can also drastically improve performance.
 
 Gzip can help reduce the amount of network transfer Nginx deals with. However, be careful increasing the gzip_comp_level too high as the server will begin wasting cpu cycles.
 
-````
+````nginx
     gzip_vary                    on;
     gzip_proxied                any;
     gzip_comp_level               2;
@@ -318,7 +318,7 @@ Since disk is slow and memory is fast the aim is to get as many FastCGI response
 
 
 *file excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
     # first appeared in Nginx 1.5.6 (1.6.0 stable) and can be used to turn buffering completely on/off. It's on by default.
     fastcgi_buffering                 on;
 
@@ -344,7 +344,7 @@ Since disk is slow and memory is fast the aim is to get as many FastCGI response
 
 The access_log portion defines the directive, the log_file portion defines the location of the access.log file, the log_format portion can be defined using variables (default format is combined). If you don’t require this information then it’s preferable to disable it, which will save your environment a bunch of additional processing and hard drive space too. The following shows an example of what the “combined” log_format looks like:
 
-````
+````nginx
     log_format combined '$remote_addr - $remote_user [$time_local]  '
         '"$request" $status $body_bytes_sent '
         '"$http_referer" "$http_user_agent"';
@@ -379,7 +379,7 @@ Tip: You can install the open source tool [GoAccess](https://goaccess.io/) to an
 If your site serves static assets (such as CSS/JavaScript/images), Nginx can cache these files for a short period of time. Adding this within your configuration block tells Nginx to cache 1000 files for 30 seconds, excluding any files that haven’t been accessed in 20 seconds, and only files that have 5 times or more. If you aren’t deploying frequently you can safely bump up these numbers higher.
 
 *File excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
     open_file_cache max=1000 inactive=20s;
     open_file_cache_valid 30s;
     open_file_cache_min_uses 5;
@@ -389,7 +389,7 @@ If your site serves static assets (such as CSS/JavaScript/images), Nginx can cac
 It's possible to set expire headers for files that don't change and are served regularly. This directive can be added to the actual Nginx server block.
 
 *File excerpt: /etc/nginx/nginx.conf*
-````
+````nginx
     location ~* (?:^|/)\. {
         deny all;
     }
@@ -447,7 +447,7 @@ It's possible to set expire headers for files that don't change and are served r
 Inside the `nginx.conf` file add an HTTP map like the one below, adding an entry for each of the spam domains. Value of **1** is considered to be **spam**, **0** for **legitimate** traffic.
 The `~*` before each domain means case-insensitive matching.
 
-````
+````nginx
     http {
         map $http_referer $bad_referer {
             default                  0;
@@ -475,7 +475,7 @@ Now to test that blocking is actually working we can run the following curl comm
 
 Image or HTML hotlinking means someone makes a link to your site to one of your images, but displays it on their own site. I strongly suggest you block and stop image hotlinking at your server level itself.
 
-````
+````nginx
     # Stop deep linking or hot linking
     location ~ .(gif|png|webm|jpe?g)$ {
         valid_referers none blocked ~.google. ~.bing. ~.yahoo. server_names ~($host);
